@@ -17,9 +17,6 @@ Install this plugin using your favorite plugin manager, and then call
 ```lua
 {
   "jdrupal-dev/css-vars.nvim",
-  dependencies = {
-    "saadparwaiz1/cmp_luasnip",
-  },
   config = function()
     require("css-vars").setup()
   end,
