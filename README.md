@@ -4,27 +4,39 @@
 
 ## :lock: Requirements
 
-- [cmp_luasnip](https://github.com/saadparwaiz1/cmp_luasnip)
 - [ripgrep](https://github.com/BurntSushi/ripgrep) (needs to be installed on your machine)
 
 ## :package: Installation
 
-Install this plugin using your favorite plugin manager, and then call
-`require("css-vars").setup()`.
+Install this plugin as a dependency to `hrsh7th/nvim-cmp`.
 
 ### [lazy.nvim](https://github.com/folke/lazy.nvim)
-
 ```lua
 {
-  "jdrupal-dev/css-vars.nvim",
+  "hrsh7th/nvim-cmp",
+  dependencies = {
+    -- other dependencies...
+    {
+      "jdrupal-dev/css-vars.nvim",
+      opts = {},
+    },
+  },
   config = function()
-    require("css-vars").setup()
-  end,
+     cmp.setup({
+      -- Sources for autocompletion.
+      sources = cmp.config.sources({
+        { name = "nvim_lsp" },
+        { name = "css_vars" },
+        -- other sources...
+      }),
+    })
+    -- more configuration...
+  end
 }
 ```
 
-## Limitations
-This plugin scans your project for css vars using `ripgrep` and sets up the
-luasnip snippets when starting neovim.
+## :rocket: Features
+This plugin scans your project for css vars using `ripgrep` and sets up the `css_vars`
+completion source upon opening neovim.
 
 If you add new CSS variables, you need to restart neovim for them to show in nvim-cmp.
