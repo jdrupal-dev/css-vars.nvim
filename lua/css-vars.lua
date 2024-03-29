@@ -38,7 +38,7 @@ end
 
 function M.setup()
   vim.fn.jobstart(
-    'rg -e "(--[^:)]*):" -r \'$1\' -o --no-filename -g "*.css" -g "*.less" -g "*.scss" . > ' .. cache_file_path,
+    'rg -e "[^\\w](--[^:)]*):" -r \'$1\' -o --no-filename -g "*.css" -g "*.less" -g "*.scss" . > ' .. cache_file_path,
     {
       cwd = vim.loop.cwd(),
       on_exit = function()
