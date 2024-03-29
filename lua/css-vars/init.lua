@@ -46,6 +46,15 @@ M.setup = function()
         end
 
         source.complete = function(_, request, callback)
+          if
+              request.context.filetype ~= "css"
+              and request.context.filetype ~= "less"
+              and request.context.filetype ~= "scss"
+          then
+            callback({ isIncomplete = true })
+            return
+          end
+
           local input = string.sub(request.context.cursor_before_line, request.offset - 1)
           local prefix = string.sub(request.context.cursor_before_line, 1, request.offset - 1)
 
