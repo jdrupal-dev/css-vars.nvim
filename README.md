@@ -10,6 +10,8 @@
 
 Install this plugin as a dependency to `hrsh7th/nvim-cmp`.
 
+Default configuration can be found in `lua/css-vars/default_config.lua`.
+
 ### [lazy.nvim](https://github.com/folke/lazy.nvim)
 ```lua
 {
@@ -18,7 +20,13 @@ Install this plugin as a dependency to `hrsh7th/nvim-cmp`.
     -- other dependencies...
     {
       "jdrupal-dev/css-vars.nvim",
-      opts = {},
+      opts = {
+        -- If you use CSS-in-JS, you can add the autocompletion to JS/TS files.
+        cmp_filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+        -- WARNING: The search is not optimized to look for variables in JS files.
+        -- If you change the search_extensions you might get false positives and weird completion results.
+        search_extensions = { ".js", ".ts", ".jsx", ".tsx" }
+      },
     },
   },
   config = function()

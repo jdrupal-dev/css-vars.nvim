@@ -3,29 +3,32 @@ local Job = require("plenary.job")
 local registered = false
 
 local M = {}
-M.setup = function()
+M.setup = function(cfg)
+  M.__conf = vim.tbl_deep_extend("keep", cfg or {}, require("css-vars.default_config"))
   if registered then
     return
   end
   registered = true
 
+  local args = {
+    "-e",
+    "[^\\w](--[^:)]*):",
+    "-r",
+    "'$1'",
+    "-o",
+    "--no-filename",
+  }
+
+  -- Only search in files that are listed in the "search_extensions" config.
+  for _, extension in pairs(M.__conf.search_extensions) do
+    table.insert(args, "-g")
+    table.insert(args, "*" .. extension)
+  end
+  table.insert(args, vim.loop.cwd())
+
   Job:new({
     command = "rg",
-    args = {
-      "-e",
-      "[^\\w](--[^:)]*):",
-      "-r",
-      "'$1'",
-      "-o",
-      "--no-filename",
-      "-g",
-      "*.css",
-      "-g",
-      "*.less",
-      "-g",
-      "*.scss",
-      vim.loop.cwd(),
-    },
+    args = args,
     env = { PATH = vim.env.PATH },
     on_exit = function(j)
       local result = j:result()
@@ -46,11 +49,7 @@ M.setup = function()
         end
 
         source.complete = function(_, request, callback)
-          if
-              request.context.filetype ~= "css"
-              and request.context.filetype ~= "less"
-              and request.context.filetype ~= "scss"
-          then
+          if not vim.tbl_contains(M.__conf.cmp_filetypes, request.context.filetype) then
             callback({ isIncomplete = true })
             return
           end
