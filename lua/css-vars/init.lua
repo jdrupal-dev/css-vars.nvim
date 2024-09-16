@@ -12,9 +12,9 @@ M.setup = function(cfg)
 
   local args = {
     "-e",
-    "[^\\w](--[^:)]*):",
+    "[^\\w](--[^:)]*):([^;]+);",
     "-r",
-    "'$1'",
+    "'$1' '$2'",
     "-o",
     "--no-filename",
   }
@@ -62,7 +62,7 @@ M.setup = function(cfg)
             local items = {}
             local processed = {}
             for _, item in pairs(result) do
-              local css_var = (item:gsub("'%-(.*)'", "%1"))
+              local css_var, css_value = item:match("^'%-(.-)' '(.-)'")
               if processed[css_var] then
                 goto continue
               end
@@ -71,6 +71,7 @@ M.setup = function(cfg)
                 filterText = css_var,
                 label = "-" .. css_var,
                 kind = 6,
+                documentation = css_value,
                 textEdit = {
                   newText = css_var,
                   range = {
