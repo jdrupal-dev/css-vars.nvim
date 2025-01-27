@@ -8,11 +8,11 @@
 
 ## :package: Installation
 
-Install this plugin as a dependency to `hrsh7th/nvim-cmp`.
+Install this plugin as a dependency to `hrsh7th/nvim-cmp` or `Saghen/blink.cmp`.
 
 Default configuration can be found in `lua/css-vars/default_config.lua`.
 
-### [lazy.nvim](https://github.com/folke/lazy.nvim)
+### [nvim-cmp](https://github.com/hrsh7th/nvmi-cmp)
 ```lua
 {
   "hrsh7th/nvim-cmp",
@@ -43,8 +43,35 @@ Default configuration can be found in `lua/css-vars/default_config.lua`.
 }
 ```
 
+### [blink.cmp](https://github.com/Saghen/blink.cmp)
+```lua
+{
+  "Saghen/blink.cmp",
+  dependencies = {
+    -- other dependencies...
+    {
+      "jdrupal-dev/css-vars.nvim",
+      opts = {
+        -- WARNING: The search is not optimized to look for variables in JS files.
+        -- If you change the search_extensions you might get false positives and weird completion results.
+        search_extensions = { ".js", ".ts", ".jsx", ".tsx" }
+      },
+    },
+  },
+  opts = {
+    -- your blink.cmp config...
+    providers = {
+      css_vars = {
+        name = "css-vars",
+        module = "css-vars.blink",
+      },
+    },
+  }
+}
+```
+
 ## :rocket: Features
 This plugin scans your project for css vars using `ripgrep` and sets up the `css_vars`
 completion source upon opening neovim.
 
-If you add new CSS variables, you need to restart neovim for them to show in nvim-cmp.
+If you add new CSS variables, you need to restart neovim for them to show up.
