@@ -1,5 +1,5 @@
 local Job = require("plenary.job")
-local async = require("blink.cmp.lib.async")
+local async = require("blink.lib.task")
 
 local config
 local css_variables
@@ -90,7 +90,7 @@ end
 
 ---@param context blink.cmp.Context
 function M:get_completions(context, callback)
-	local task = async.task.empty():map(function()
+	local task = async.new(function()
 		local is_char_trigger = vim.list_contains(
 			self:get_trigger_characters(),
 			context.line:sub(context.bounds.start_col - 1, context.bounds.start_col - 1)
